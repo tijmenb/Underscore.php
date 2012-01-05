@@ -310,6 +310,15 @@ class UnderscoreCollectionsTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals(array('bar'), __::pluck($stooges_obj, 'foo'));
     $this->assertEquals(array('bar'), __($stooges_obj)->pluck('foo'), 'works with OO-style call');
   
+    // Object with a __getter.
+    $stooges = array();
+    $stooges[] = new StoogesGetter(array('name'=>'moe',   'age'=> 40));
+    $stooges[] = new StoogesGetter(array('name'=>'larry', 'age'=> 50, 'foo'=>'bar'));
+    $stooges[] = new StoogesGetter(array('name'=>'curly', 'age'=> 60));
+    
+    $this->assertEquals(array('moe', 'larry', 'curly'), __::pluck($stooges, 'name'));
+    $this->assertEquals(array(40, 50, 60), __::pluck($stooges, 'age'));
+  
     // docs
     $stooges = array(
       array('name'=>'moe', 'age'=>40),
@@ -317,6 +326,8 @@ class UnderscoreCollectionsTest extends PHPUnit_Framework_TestCase {
       array('name'=>'curly', 'age'=>60)
     );
     $this->assertEquals(array('moe', 'larry', 'curly'), __::pluck($stooges, 'name'));
+    
+    
   }
   
   public function testMax() {
@@ -452,5 +463,17 @@ class UnderscoreCollectionsTest extends PHPUnit_Framework_TestCase {
     $stooge->name = 'moe';
     $stooge->age = 40;
     $this->assertEquals(2, __::size($stooge));
+  }
+}
+
+
+class StoogesGetter {
+  
+  function __construct($data) {
+    $this->data = $data;
+  }
+  
+  function __get($key) {
+    return $this->data[$key];
   }
 }
