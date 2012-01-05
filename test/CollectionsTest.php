@@ -6,7 +6,7 @@ class UnderscoreCollectionsTest extends PHPUnit_Framework_TestCase {
   
   public function testEach() {
     // from js
-    $test =& $this;
+    $test = $this;
     __::each(array(1,2,3), function($num, $i) use ($test) {
       $test->assertEquals($num, $i+1, 'each iterators provide value and iteration count');
     });
@@ -38,7 +38,7 @@ class UnderscoreCollectionsTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals(0, $answers, 'handles a null property');
     
     // extra
-    $test =& $this;
+    $test = $this;
     __(array(1,2,3))->each(function($num, $i) use ($test) {
       $test->assertEquals($num, $i+1, 'each iterators provide value and iteration count within OO-style call');
     });
