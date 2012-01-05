@@ -106,11 +106,19 @@ class __ {
     $collection = (array) self::_collection($collection);
         
     $return = array();
+    
     foreach($collection as $item) {
-      foreach($item as $k=>$v) {
-        if($k === $key) $return[] = $v;
-      }
+      if (is_object($item)) {        
+        if (is_callable(array($item, '__get')) || isset($item->{$key})) {
+          $return[] = $item->{$key};
+        }
+      } else {
+        foreach($item as $k=>$v) {
+          if($k === $key) $return[] = $v;
+        }
+      }  
     }
+    
     return self::_wrap($return);
   }
   
